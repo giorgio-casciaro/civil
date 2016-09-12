@@ -1,0 +1,8 @@
+/home/vopa/Scrivania/git/civil/docker/local-civil
+
+docker-compose up -d
+
+docker-compose up -d --build
+
+ docker-compose run nginx
+ docker-compose exec php sh

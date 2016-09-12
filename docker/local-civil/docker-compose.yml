@@ -1,0 +1,51 @@
+version: '2'
+services:
+  nginx:
+    build: ./nginx
+    ports:
+        - "80:80"
+    links:
+        - php:php
+        - nodejs:nodejs
+    volumes:
+        - ./../../static:/var/www
+  php:
+    build: ./php
+    volumes:
+      - ./../../php:/var/www/html
+    command: /bin/sh -c "composer install && php-fpm"
+    #user: app
+    #ports:
+    #    - "9000:9000"
+  nodejs:
+    build: ./nodejs
+    ports:
+        - "3000:3000"
+    command: npm start
+    volumes:
+       - ./../../nodejs:/home/app
+  rabbitmq:
+    build: ./rabbitmq
+    ports:
+        - "15672:15672"
+#  java:
+#    image: openjdk:alpine
+#    volumes:
+#       - ./../../java:/usr/src/myapp
+#    working_dir: /usr/src/myapp
+#    command: /bin/sh -c "javac DateServer.java && java DateServer.class"
+  rabbitmq:
+    build: ./rabbitmq
+    ports:
+        - "15672:15672"
+  cassandra:
+    image: cassandra:3
+  elasticsearch:
+    image: elasticsearch:2
+  kong:
+    image: mashape/kong:latest
+#  consul:
+#    image: consul:latest
+#    command: /bin/sh -c "consul agent -data-dir=/tmp/consul -bootstrap -node civilconnect -datacenter civilconnect -server civilconnect && consul agent -ui"
+#    ports:
+#        - "8500:8500"

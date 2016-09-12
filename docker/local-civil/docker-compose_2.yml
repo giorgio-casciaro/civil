@@ -1,0 +1,25 @@
+nginx:
+  build: ./nginx
+  ports:
+      - "80:80"
+
+  # seems like fpm receive the full path from nginx
+  # and try to find the files in this dock, so it must
+  # be the same as nginx.root
+  links:
+    - fpm:fpm
+  volumes:
+      - ./../../static:/var/www
+
+fpm:
+    build: ./php
+    #ports:
+    #   - "9000:9000"
+
+    # seems like fpm receive the full path from nginx
+    # and try to find the files in this dock, so it must
+    # be the same as nginx.root
+    # links:
+    #  - nginx:nginx
+    volumes:
+      - ./../../php:/var/www/html/
